@@ -10,14 +10,14 @@ const Form = () => {
 
   const handleInput = (e) => {
     const { name, value, options, checked, type } = e.target;
-    if (type == "select-multiple") {
+    if (type === "select-multiple") {
       const selectedOptions = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
       setFormData((prev) => {
         return { ...prev, [name]: selectedOptions };
       });
-    } else if (type == "checkbox") {
+    } else if (type === "checkbox") {
       setFormData((prev) => {
         return { ...prev, [name]: checked };
       });
