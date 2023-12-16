@@ -4,14 +4,14 @@ spring:
   datasource:
     initialization-mode: always
     initialize: true
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL_LOCAL}
+    username: ${DB_USERNAME_LOCAL}
+    password: ${DB_PASSWORD_LOCAL}
   jpa:
     generate-ddl: true
     hibernate:
       show-sql: true
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

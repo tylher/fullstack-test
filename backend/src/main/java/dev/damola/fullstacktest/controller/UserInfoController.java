@@ -29,4 +29,10 @@ public class UserInfoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
+    @PutMapping("/{userId}")
+        public ResponseEntity<?> editUserInfo(@PathVariable String userId, @RequestBody UserInfoDto userInfoDto ) throws Exception {
+           Map<String, Object> result = userInfoService.editUserInfo(userId, userInfoDto);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

@@ -7,14 +7,19 @@ const Sectors = ({ handleSelectInput, selectedSectors }) => {
   const organizedData = organizeData(data);
 
   useEffect(() => {
-    axios
-      .get(BASE_URL + "/sectors")
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching sectors: " + err);
-      });
+    if (localStorage.getItem("sectors")) {
+      setData(JSON.parse(localStorage.getItem("sectors")));
+    } else {
+      axios
+        .get(BASE_URL + "/sectors")
+        .then((response) => {
+          setData(response.data.data);
+          localStorage.setItem("sectors", JSON.stringify(response.data.data));
+        })
+        .catch((err) => {
+          console.error("Error fetching sectors: " + err);
+        });
+    }
   }, []);
   return (
     <div className="flex flex-col items-start w-full gap-1 ">
