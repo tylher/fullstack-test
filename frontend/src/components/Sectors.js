@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Sectors = ({ handleSelectInput }) => {
+const Sectors = ({ handleSelectInput, selectedSectors }) => {
   const [data, setData] = useState([]);
   const organizedData = Object.entries(
     data.reduce((result, item) => {
@@ -38,8 +38,7 @@ const Sectors = ({ handleSelectInput }) => {
       return result;
     }, {})
   );
-  console.log(data);
-  console.log(organizedData);
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/sectors")
@@ -52,25 +51,31 @@ const Sectors = ({ handleSelectInput }) => {
   }, []);
   return (
     <div className="flex flex-col items-start w-full gap-1 ">
-      <label htmlFor="sectors" className="text-slate-100 text-lg font-semibold">
+      <label
+        htmlFor="selectedSectors"
+        className="text-slate-100 text-lg font-semibold"
+      >
         Sectors:
       </label>
       <select
-        name="sectors"
+        name="selectedSectors"
+        id="selectedSectors"
         multiple
         className="w-full bg-gray-200 focus:bg-white rounded-md focus:border-none focus:ring-transparent "
         onChange={handleSelectInput}
+        value={selectedSectors}
+        required
       >
-        {organizedData.map((sector) => {
+        {organizedData.map((sector, id) => {
           return (
-            <>
+            <optgroup key={id}>
               <option
                 id={sector[1].value.sectorId}
                 value={sector[1].value.sectorId}
               >
                 {sector[0]}
               </option>
-              {Object.entries(sector[1].subCategories).map((subSect) => {
+              {Object.entries(sector[1].subCategories).map((subSect, id) => {
                 return (
                   <>
                     <option
@@ -80,8 +85,7 @@ const Sectors = ({ handleSelectInput }) => {
                     >
                       {subSect[0]}
                     </option>
-                    {Object.entries(subSect[1]).map((childSect) => {
-                      // console.log(childSect[1].name);
+                    {Object.entries(subSect[1]).map((childSect, id) => {
                       if (childSect[0] !== "value") {
                         return (
                           <>
@@ -92,12 +96,13 @@ const Sectors = ({ handleSelectInput }) => {
                             >
                               {childSect[0]}
                             </option>
-                            {childSect[1].map((sect) => {
+                            {childSect[1].map((sect, id) => {
                               if (sect.name !== childSect[0]) {
                                 return (
                                   <option
                                     id={sect.sectorId}
                                     value={sect.sectorId}
+                                    key={id}
                                     className="pl-9"
                                   >
                                     {sect.name}
@@ -112,7 +117,7 @@ const Sectors = ({ handleSelectInput }) => {
                   </>
                 );
               })}
-            </>
+            </optgroup>
           );
         })}
       </select>

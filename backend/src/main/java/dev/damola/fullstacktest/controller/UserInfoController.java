@@ -1,6 +1,7 @@
 package dev.damola.fullstacktest.controller;
 
 import dev.damola.fullstacktest.UserInfoDto;
+import dev.damola.fullstacktest.model.UserInfo;
 import dev.damola.fullstacktest.service.UserInfoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,11 @@ public class UserInfoController {
         Map<String, Object> result = userInfoService.storeUserInfo(userInfoDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+        public ResponseEntity<?> getUsers(){
+            Map<String, Object> result = userInfoService.getAllUsersInfo();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
 }

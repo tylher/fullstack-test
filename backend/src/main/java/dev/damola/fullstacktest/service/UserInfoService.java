@@ -7,17 +7,12 @@ import dev.damola.fullstacktest.model.UserInfo;
 import dev.damola.fullstacktest.model.UserSector;
 import dev.damola.fullstacktest.repository.SectorRepository;
 import dev.damola.fullstacktest.repository.UserInfoRepository;
-import dev.damola.fullstacktest.repository.UserSectorRepository;
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class UserInfoService {
@@ -48,5 +43,12 @@ public class UserInfoService {
         }
     }
 
-
+public Map<String, Object> getAllUsersInfo(){
+        List<UserInfo> userInfoList = userInfoRepository.findAll();
+        Map<String, Object> newMap = new HashMap<>();
+        String successString = "users info fetched successfully";
+        newMap.put("message", successString);
+        newMap.put("data", userInfoList);
+        return newMap;
+}
 }
