@@ -1,0 +1,7 @@
+services:
+  - name: fullstack-test
+    type: web
+    buildCommand: docker build -t fullstack-test ./backend
+    startCommand: docker run -p 8080:8080 fullstack-test
+ignore:
+  - frontend/*
