@@ -2,6 +2,7 @@ import React from "react";
 import UserInfo from "./UserInfo";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { BASE_URL } from "../utils/helpers";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,7 +13,7 @@ const Users = () => {
     }
 
     axios
-      .get("http://localhost:8080/api/userInfo/all")
+      .get(BASE_URL + "/userInfo/all")
       .then((res) => {
         setUsers(res.data.data);
       })

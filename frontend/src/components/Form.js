@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sectors from "./Sectors";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/helpers";
 
 const Form = () => {
   const [formData, setFormData] = useState({});
@@ -42,7 +43,7 @@ const Form = () => {
     e.preventDefault();
     if (formData.agreeToTerms === true) {
       return axios
-        .post("http://localhost:8080/api/userInfo", formData)
+        .post(BASE_URL + "/userInfo", formData)
         .then((res) => {
           sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
           sessionStorage.setItem("userInput", JSON.stringify(formData));

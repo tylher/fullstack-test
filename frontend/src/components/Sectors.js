@@ -1,47 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL, organizeData } from "../utils/helpers";
 
 const Sectors = ({ handleSelectInput, selectedSectors }) => {
   const [data, setData] = useState([]);
-  const organizedData = Object.entries(
-    data.reduce((result, item) => {
-      const category = item.category;
-      const subcategory = item.subCategory;
-      const parentSector = item.parentSector;
-      if (!result[category.name]) {
-        result[category.name] = { subCategories: {} };
-      }
-      if (subcategory !== null) {
-        if (!result[category.name].subCategories[subcategory.name]) {
-          result[category.name].subCategories[subcategory.name] = {};
-        }
-        if (parentSector) {
-          if (
-            !result[category.name].subCategories[subcategory.name][
-              parentSector.name
-            ]
-          ) {
-            result[category.name].subCategories[subcategory.name][
-              parentSector.name
-            ] = [];
-          }
-          result[category.name].subCategories[subcategory.name][
-            parentSector.name
-          ].push(item);
-        } else {
-          result[category.name].subCategories[subcategory.name].value = item;
-        }
-      } else {
-        result[category.name].value = item;
-      }
-
-      return result;
-    }, {})
-  );
+  const organizedData = organizeData(data);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/sectors")
+      .get(BASE_URL + "/sectors")
       .then((response) => {
         setData(response.data.data);
       })
