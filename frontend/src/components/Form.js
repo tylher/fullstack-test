@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sectors from "./Sectors";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils/helpers";
+import { BASE_URL, storeSession } from "../utils/helpers";
 
 const Form = () => {
   const location = useLocation();
@@ -22,7 +22,6 @@ const Form = () => {
   }, []);
   useEffect(() => {
     setEdit(urlParam);
-    console.log(edit);
   }, [edit]);
 
   const handleInput = (e) => {
@@ -50,12 +49,10 @@ const Form = () => {
     if (formData.agreeToTerms === true) {
       if (edit) {
         const userId = JSON.parse(sessionStorage.getItem("userInfo")).userId;
-        console.log(userId);
         return axios
           .put(BASE_URL + "/userInfo/" + userId, formData)
           .then((res) => {
-            sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
-            sessionStorage.setItem("userInput", JSON.stringify(formData));
+            storeSession(res.data.data, formData);
             navigate("/users");
           })
           .catch((ex) => {
@@ -65,8 +62,7 @@ const Form = () => {
         return axios
           .post(BASE_URL + "/userInfo", formData)
           .then((res) => {
-            sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
-            sessionStorage.setItem("userInput", JSON.stringify(formData));
+            storeSession(res.data.data, formData);
             navigate("/users");
           })
           .catch((ex) => {

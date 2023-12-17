@@ -1,5 +1,5 @@
 export const BASE_URL = "https://fullstack-test-e1sd.onrender.com/api";
-// export const BASE_URL = "http://localhost:8080/api";
+
 export const organizeData = (data) => {
   return Object.entries(
     data.reduce((result, item) => {
@@ -36,4 +36,9 @@ export const organizeData = (data) => {
       return result;
     }, {})
   );
+};
+
+export const storeSession = (apiData, formData, navigate) => {
+  sessionStorage.setItem("userInfo", JSON.stringify(apiData));
+  sessionStorage.setItem("userInput", JSON.stringify(formData));
 };
