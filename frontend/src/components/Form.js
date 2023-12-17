@@ -5,19 +5,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/helpers";
 
 const Form = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const urlParam = searchParams.get("edit");
   const [formData, setFormData] = useState({});
   const [edit, setEdit] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+
+  // console.log(urlParam);
 
   useEffect(() => {
-    setEdit(searchParams.get("edit"));
     if (sessionStorage.getItem("userInput")) {
       let savedUserInput = JSON.parse(sessionStorage.getItem("userInput"));
       setFormData(savedUserInput);
     }
   }, []);
+  useEffect(() => {
+    setEdit(urlParam);
+    console.log(edit);
+  }, [edit]);
 
   const handleInput = (e) => {
     const { name, value, options, checked, type } = e.target;
@@ -42,16 +48,31 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.agreeToTerms === true) {
-      return axios
-        .post(BASE_URL + "/userInfo", formData)
-        .then((res) => {
-          sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
-          sessionStorage.setItem("userInput", JSON.stringify(formData));
-          navigate("/users");
-        })
-        .catch((ex) => {
-          console.error(ex);
-        });
+      if (edit) {
+        const userId = JSON.parse(sessionStorage.getItem("userInfo")).userId;
+        console.log(userId);
+        return axios
+          .put(BASE_URL + "/userInfo/" + userId, formData)
+          .then((res) => {
+            sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
+            sessionStorage.setItem("userInput", JSON.stringify(formData));
+            navigate("/users");
+          })
+          .catch((ex) => {
+            console.error(ex);
+          });
+      } else {
+        return axios
+          .post(BASE_URL + "/userInfo", formData)
+          .then((res) => {
+            sessionStorage.setItem("userInfo", JSON.stringify(res.data.data));
+            sessionStorage.setItem("userInput", JSON.stringify(formData));
+            navigate("/users");
+          })
+          .catch((ex) => {
+            console.error(ex);
+          });
+      }
     } else {
       console.error("please agree to terms before continuing");
     }

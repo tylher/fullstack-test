@@ -65,7 +65,10 @@ public Map<String, Object> getAllUsersInfo(){
         try{
             UserInfo savedUserInfo = userInfoRepository.findById(userId)
                     .orElseThrow(()->new NotfoundException("user info not found"));
-            savedUserInfo.getSelectedSectors().forEach(sector-> sector.setUserInfo(null));
+            savedUserInfo.getSelectedSectors().forEach(sector-> {
+                sector.setUserInfo(null);
+                userSectorRepository.delete(sector);
+            });
            savedUserInfo.getSelectedSectors().clear();
             List<UserSector> sectorList = userInfoDto.selectedSectors().stream().map(sectorId->{
                 Sector sector= sectorRepository.findById(sectorId).orElseThrow(()->
