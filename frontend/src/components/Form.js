@@ -12,8 +12,6 @@ const Form = () => {
   const [edit, setEdit] = useState(false);
   const navigate = useNavigate();
 
-  // console.log(urlParam);
-
   useEffect(() => {
     if (sessionStorage.getItem("userInput")) {
       let savedUserInput = JSON.parse(sessionStorage.getItem("userInput"));
@@ -52,8 +50,8 @@ const Form = () => {
         return axios
           .put(BASE_URL + "/userInfo/" + userId, formData)
           .then((res) => {
-            storeSession(res.data.data, formData);
             navigate("/users");
+            storeSession(res.data.data, formData);
           })
           .catch((ex) => {
             console.error(ex);
@@ -62,8 +60,8 @@ const Form = () => {
         return axios
           .post(BASE_URL + "/userInfo", formData)
           .then((res) => {
-            storeSession(res.data.data, formData);
             navigate("/users");
+            storeSession(res.data.data, formData);
           })
           .catch((ex) => {
             console.error(ex);
@@ -77,17 +75,17 @@ const Form = () => {
   return (
     <div className="flex flex-col h-screen justify-center items-center">
       <form
-        className="w-2/4 flex px-10 flex-col gap-3 bg-emerald-600 pt-7 pb-10 rounded-lg item-start"
+        className=" md:3/4 lg:w-2/4 flex px-10 flex-col gap-3 bg-emerald-600 pt-7 pb-10 rounded-lg item-start mx-10"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-white text-[17px]">
+        <h2 className="text-white text-[15px] md:text-[17px]">
           Please enter your name and pick the Sectors you are currently involved
           in.
         </h2>
         <div className="flex flex-col items-start w-full gap-1">
           <label
             htmlFor="name"
-            className="text-slate-100 text-lg font-semibold"
+            className="text-slate-100 text-md md:text-lg font-semibold"
           >
             Name:
           </label>
@@ -95,7 +93,7 @@ const Form = () => {
             type="text"
             id="name"
             name="name"
-            className="w-full bg-gray-200 p-2 focus:bg-white rounded"
+            className="w-full bg-gray-200 p-2 md:text-base text-sm focus:bg-white rounded"
             onChange={handleInput}
             value={formData.name}
             required
@@ -115,7 +113,7 @@ const Form = () => {
           />
           <label
             htmlFor="agreeToTerms"
-            className="text-slate-100 text-lg font-semibold "
+            className="text-slate-100 text-md md:text-lg font-semibold "
             checked={formData.agreeToTerms}
           >
             {" "}
@@ -126,7 +124,7 @@ const Form = () => {
         <input
           type="submit"
           value="Save"
-          className="bg-amber-300 text-gray-700 font-semibold w-fit text-lg px-2 rounded text-center py-1 leading-none"
+          className="bg-amber-300 text-gray-700 font-semibold w-fit text-md md:text-lg px-2 rounded text-center py-1 leading-none hover:bg-amber-500 hover:text-white cursor-pointer"
         />
       </form>
     </div>
