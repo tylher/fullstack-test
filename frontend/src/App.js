@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Form from "./components/Form";
-import UserInfo from "./components/UserInfo";
 import Users from "./components/Users";
 
 function App() {
